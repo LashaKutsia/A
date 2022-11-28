@@ -1,0 +1,57 @@
+ connect 'jdbc:derby://localhost:1527/UsersDb;create=true';
+ბაზასთან შემდგომში დაკავშირება - connect 'jdbc:derby://localhost:1527/UsersDb’;
+Users - ცხრილის შექმნა - CREATE TABLE Users(
+    Id INTEGER NOT NULL PRIMARY KEY,
+    Name VARCHAR(255),
+    Lastname VARCHAR(255),
+    Personal_id VARCHAR(255) UNIQUE,
+    Balance decimal(10, 2)
+);
+INSERT INTO Users
+(id, Name, Lastname, Personal_id, Balance)
+VALUES
+(1, 'lasha', 'kutsia', '38789658320', 5000),
+(2, 'Lela', 'messi', '75323478221', 5700.405),
+(3, 'toka', 'janiani', '96321438491', 12.47);
+
+CREATE TABLE Agents(
+    Id INTEGER NOT NULL,
+    Name VARCHAR(255),
+    Password VARCHAR(255),
+    PRIMARY KEY (Id)
+);
+INSERT INTO Agents
+(id, Name, Password)
+VALUES
+(1, 'luka', '111'),
+(2, 'nika', '222'),
+(3, 'beqa', '333');
+
+
+CREATE TABLE Agent_access(
+    Row_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
+    Allowed_ip VARCHAR(255),
+    Agent_id INTEGER,
+    PRIMARY KEY (Row_id),
+    FOREIGN KEY(Agent_id) REFERENCES Agents(Id)
+);
+INSERT INTO Agent_access
+(Allowed_ip, Agent_id)
+VALUES
+('127.18.1', 1),
+('127.47.56.1', 2),
+('192.168.0.2', 3);
+
+
+CREATE TABLE Transactions(
+    System_transaction_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY,
+    Agent_id INTEGER,
+    Agent_transaction_id VARCHAR(255),
+    User_id INTEGER,
+    Amount DECIMAL(10, 2),
+    Transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(Agent_id, agent_transaction_id),
+    PRIMARY KEY (System_transaction_id),
+    FOREIGN KEY(Agent_id) REFERENCES Agents(Id),
+    FOREIGN KEY(User_id) REFERENCES Users(Id)
+);

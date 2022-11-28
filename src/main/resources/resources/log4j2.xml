@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <File name="MyFile" fileName="${sys:catalina.home}/logs/app.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c %m%n</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="ge.ufc" level="DEBUG" additivity = "false">
+            <AppenderRef ref="MyFile"/>
+        </Logger>
+    </Loggers>
+</Configuration>
